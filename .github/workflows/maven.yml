@@ -1,0 +1,39 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Reporte de Jacoco Automático usando java maven josemiranda
+on:
+  push:
+    branches: [ "main","master" ]
+  pull_request:
+    branches: [ "main","master" ]
+
+jobs:
+  build-and-test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Codigo
+      uses: actions/checkout@v4
+     
+    - name: JDK 21configurar
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: maven
+    - name: pruebda JaCoCo
+      run: mvn clean test jacoco:report
+
+    - name: report de jacobo subida
+      uses: actions/upload-artifact@v4
+      with:
+        name: reporte-jacobo
+        path: target/site/jacoco/
+        retention-days: 5
