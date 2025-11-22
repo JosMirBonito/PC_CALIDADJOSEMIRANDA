@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class InventoryManager {
-//ads
+//adsd
     private Map<String, Integer> inventory = new HashMap<>();
 
     public void AddItem(String name, int quantity) {
