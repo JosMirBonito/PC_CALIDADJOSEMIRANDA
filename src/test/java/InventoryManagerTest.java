@@ -12,7 +12,7 @@ public class InventoryManagerTest {
     public static void IniciarPrueba() {
         System.out.println("\n[INICIO DE PRUEBAS UNITARIAS JOSEMIRANDA InventoryManager]\n");
     }
-//U
+//Uds
     @AfterAll
     public static void endAll() {
         System.out.println("\n[FIN DE PRUEBAS UNITARIAS JOSEMIRANDA InventoryManager]\n");
