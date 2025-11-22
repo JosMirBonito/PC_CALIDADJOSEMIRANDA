@@ -11,7 +11,7 @@ package com.mycompany.pagoconsola;
 public class Email {
 
     public boolean isValidEmail(String email) {
-        //holi
+        //holi.
         if (email == null || email.trim().isEmpty()) {
             throw new IllegalArgumentException("El correo no puede ser nulo o vacío");
         }
