@@ -17,7 +17,10 @@ public class PasswordValidatorTest {
         System.out.println("\n[INICIO DE PRUEBAS UNITARIAS PasswordValidator]\n");
     }
 
-
+    @AfterAll
+    public static void endAll() {
+        System.out.println("\n[FIN DE PRUEBAS UNITARIAS PasswordValidator]\n");
+    }
 
     @Test
     public void testIsValid_Exceptions_NullOrEmpty() {
