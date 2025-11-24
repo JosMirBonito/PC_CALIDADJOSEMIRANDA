@@ -17,81 +17,117 @@ public class EmailTest {
     }
 
     @AfterAll
-    public static void endAll() {
+    public static void FinalizarPrueba() {
         System.out.println("\n[FIN DE PRUEBAS UNITARIASJoseMiranda Email]\n");
     }
 
     @Test
-    public void testIsValidEmail_Exceptions_NullOrEmpty() {
-        Email validator = new Email();
-        String errorMsg = "El correo no puede ser nulo o vacío";
+    public void testValidarEmail_Excepciones_NuloOVacio() {
+        Email validador = new Email();
+        String mensajeError = "El correo no puede ser nulo o vacío";
 
-        Exception e1 = assertThrows(IllegalArgumentException.class, () -> validator.isValidEmail(null));
-        assertEquals(errorMsg, e1.getMessage());
+        // Caso Nulo
+        Exception e1 = assertThrows(IllegalArgumentException.class, () -> validador.isValidEmail(null));
+        assertEquals(mensajeError, e1.getMessage());
 
-        Exception e2 = assertThrows(IllegalArgumentException.class, () -> validator.isValidEmail(""));
-        assertEquals(errorMsg, e2.getMessage());
+        // Caso Vacío
+        Exception e2 = assertThrows(IllegalArgumentException.class, () -> validador.isValidEmail(""));
+        assertEquals(mensajeError, e2.getMessage());
 
-        Exception e3 = assertThrows(IllegalArgumentException.class, () -> validator.isValidEmail("   "));
-        assertEquals(errorMsg, e3.getMessage());
-    }
-
- 
-    @Test
-    public void testIsValidEmail_LengthAndSpaces() {
-        Email validator = new Email();
-
-        assertFalse(validator.isValidEmail("a@b.c"));
-
-        String longEmail = "a".repeat(250) + "@b.co"; 
-        assertFalse(validator.isValidEmail(longEmail));
-
-        assertFalse(validator.isValidEmail("j ose@test.com"));
+        // Caso Solo Espacios
+        Exception e3 = assertThrows(IllegalArgumentException.class, () -> validador.isValidEmail("   "));
+        assertEquals(mensajeError, e3.getMessage());
     }
 
     @Test
-    public void testIsValidEmail_AtSignStructure() {
-        Email validator = new Email();
+    public void testValidarEmail_LongitudYEspacios() {
+        Email validador = new Email();
 
-        assertFalse(validator.isValidEmail("Jose.com"));
+        // Muy corto
+        assertFalse(validador.isValidEmail("a@b.c"));
 
-        assertFalse(validator.isValidEmail("@test.com"));
+        // Muy largo
+        String emailLargo = "a".repeat(250) + "@b.co"; 
+        assertFalse(validador.isValidEmail(emailLargo));
 
-        assertFalse(validator.isValidEmail("jose@"));
-
-        assertFalse(validator.isValidEmail("jose@test@com"));
+        // Con espacios intermedios
+        assertFalse(validador.isValidEmail("j ose@test.com"));
     }
 
     @Test
-    public void testIsValidEmail_LocalPartValidation() {
-        Email validator = new Email();
+    public void testValidarEmail_EstructuraArroba() {
+        Email validador = new Email();
 
-        assertFalse(validator.isValidEmail(".jose@test.com"));
+        // Sin arroba
+        assertFalse(validador.isValidEmail("Jose.com"));
 
-        assertFalse(validator.isValidEmail("jose.@test.com"));
+        // Empieza con arroba
+        assertFalse(validador.isValidEmail("@test.com"));
 
-        assertFalse(validator.isValidEmail("jo..se@test.com"));
+        // Termina con arroba
+        assertFalse(validador.isValidEmail("jose@"));
 
-        assertFalse(validator.isValidEmail("jo!se@test.com"));
+        // Doble arroba separada
+        assertFalse(validador.isValidEmail("jose@test@com"));
     }
 
     @Test
-    public void testIsValidEmail_DomainPartValidation() {
-        Email validator = new Email();
+    public void testValidarEmail_ValidacionParteLocal() {
+        Email validador = new Email();
 
-        assertFalse(validator.isValidEmail("Jose@com"));
+        // Empieza con punto
+        assertFalse(validador.isValidEmail(".jose@test.com"));
 
-        assertFalse(validator.isValidEmail("Jose@x.com"));
+        // Termina con punto (antes de la arroba)
+        assertFalse(validador.isValidEmail("jose.@test.com"));
 
-        assertFalse(validator.isValidEmail("Jose@test."));
+        // Puntos consecutivos
+        assertFalse(validador.isValidEmail("jo..se@test.com"));
+
+        // Caracter no permitido (!)
+        assertFalse(validador.isValidEmail("jo!se@test.com"));
     }
 
     @Test
-    public void testIsValidEmail_Success() {
-        Email validator = new Email();
+    public void testValidarEmail_ValidacionDominio() {
+        Email validador = new Email();
 
-        assertTrue(validator.isValidEmail("Jose123@tienda.com"));
+        // Sin punto en dominio
+        assertFalse(validador.isValidEmail("Jose@com"));
 
-        assertTrue(validator.isValidEmail("Jose.ventas@mi-tienda.pe"));
+        // Dominio muy corto
+        assertFalse(validador.isValidEmail("Jose@x.com"));
+
+        // Termina en punto
+        assertFalse(validador.isValidEmail("Jose@test."));
     }
+
+   // lo que agregue para completar el 100%
+       @Test
+    public void testValidarEmail_CasoExitoso() {
+        Email validador = new Email();
+
+        assertTrue(validador.isValidEmail("Jose123@tienda.com"));
+
+        assertTrue(validador.isValidEmail("Jose.ventas@mi-tienda.pe"));
+    }
+
+    @Test
+    public void testValidarEmail_MultiplesArrobas() {
+        Email validador = new Email();
+        assertFalse(validador.isValidEmail("user@@gmail.com"));
+    }
+
+    @Test
+    public void testValidarEmail_EmpiezaConArroba() {
+        Email validador = new Email();
+        assertFalse(validador.isValidEmail("@gmail.com"));
+    }
+
+    @Test
+    public void testValidarEmail_TerminaConArroba() {
+        Email validador = new Email();
+        assertFalse(validador.isValidEmail("user@"));
+    }
+
 }
